@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <h1>Home</h1>
+</div>
+
+{% endblock %}
+
+
+<!--
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Buscar Registros</h1>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Buscar por ML" value="{{ query }}">
+        <input type="submit" value="Buscar">
+    </form>
+
+    <h2>Resultados:</h2>
+    <table>
+        <tr>
+            <th>ML</th>
+            <th>Nombre de PC</th>
+            <th>Nombre de Usuario</th>
+            <th>Cédula</th>
+            <th>Centro de Costos</th>
+            <th>Departamento</th>
+            <th>Sede</th>
+            <th>Hora</th>
+        </tr>
+        {% for registro in registros %}
+            <tr>
+                <td>{{ registro.ml }}</td>
+                <td>{{ registro.nombre_pc }}</td>
+                <td>{{ registro.nombre_user }}</td>
+                <td>{{ registro.cedula }}</td>
+                <td>{{ registro.centro_costos }}</td>
+                <td>{{ registro.departamento }}</td>
+                <td>{{ registro.sede }}</td>
+                <td>{{ registro.fecha }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">No se encontraron resultados.</td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+
+{% endblock %} -->

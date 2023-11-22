@@ -1,0 +1,92 @@
+{% block content %}
+    {% include '_navbar.html' %}
+
+    <h1>Buscar Registros</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="busqueda" placeholder="Buscar...">
+        <input type="checkbox" id="entradaSalidaCheckbox" name="entradaSalidaCheckbox"> Entrada
+        <button type="submit">Buscar</button>
+    </form>
+    
+    <table id="registros-list">
+        <tr>
+            <th>ML</th>
+            <th>Nombre PC</th>
+            <th>Nombre Usuario</th>
+            <th>Cédula</th>
+            <th>Centro de Costos</th>
+            <th>Departamento</th>
+            <th>Sede</th>
+            <th>Entrada/Salida</th> 
+            <th>Fecha de Búsqueda</th>
+            <th>Acciones</th>
+        </tr>
+        
+        {% for busqueda in registros_acumulados %}
+            {% for registro in busqueda.resultados %}
+                <tr>
+                    <td>{{ registro.ml }}</td>
+                    <td>{{ registro.nombre_pc }}</td>
+                    <td>{{ registro.nombre_user }}</td>
+                    <td>{{ registro.cedula }}</td>
+                    <td>{{ registro.centro_costos }}</td>
+                    <td>{{ registro.departamento }}</td>
+                    <td>{{ registro.sede }}</td>
+                    <td>
+                        {% if busqueda.entrada_salida == 'entrada' %}
+                            Entrada
+                        {% else %}
+                            Salida
+                        {% endif %}
+                    <td>{{ busqueda.fecha_busqueda|date:"Y-m-d H:i:s" }}</td>
+                    <td>
+                        <a href="{% url 'modificar_registro' registro.id %}">Ver mas detalles</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+    
+    <a href="{% url 'agregar_registro' %}">Agregar Registro</a>
+    <form method="post" action="{% url 'limpiar_registros' %}">
+        {% csrf_token %}
+        <button type="submit" id="limpiar-lista">Limpiar</button>
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const entradaSalidaColumns = document.querySelectorAll(".entradaSalidaColumn");
+    
+            // Analizar y alternar automáticamente entre "Entrada" y "Salida"
+            entradaSalidaColumns.forEach(function (column) {
+                const contenido = column.innerText.trim();
+                if (contenido === "Entrada") {
+                    column.setAttribute("data-entrada-salida", "entrada");
+                } else {
+                    column.setAttribute("data-entrada-salida", "salida");
+                }
+            });
+    
+            const searchForm = document.getElementById("search-form");
+    
+            searchForm.addEventListener("submit", function () {
+                // Limpieza para asegurar que la marca no quede en el campo de búsqueda
+                const busquedaInput = document.getElementById("busqueda");
+                busquedaInput.value = busquedaInput.value.replace("Entrada ", "").replace("Salida ", "");
+                
+                const entradaSalidaColumns = document.querySelectorAll(".entradaSalidaColumn");
+                
+                // Restaurar el texto original en todas las columnas después de enviar el formulario
+                entradaSalidaColumns.forEach(function (column) {
+                    const entradaSalida = column.getAttribute("data-entrada-salida");
+                    if (entradaSalida === "entrada") {
+                        column.innerText = "Entrada";
+                    } else {
+                        column.innerText = "Salida";
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

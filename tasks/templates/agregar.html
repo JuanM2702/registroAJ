@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Agregar Registro</h1>
+    <button id="agregarBtn">Agregar Registro</button>
+    <form id="agregarForm" method="POST" style="display: none;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Agregar">
+    </form>
+    
+    <script>
+        const agregarBtn = document.getElementById('agregarBtn');
+        const agregarForm = document.getElementById('agregarForm');
+
+        agregarBtn.addEventListener('click', () => {
+            agregarForm.style.display = 'block';
+        });
+    </script>
+{% endblock %}

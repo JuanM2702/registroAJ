@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar Registro</title>
+</head>
+<body>
+    <h1>Agregar Registro</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Agregar</button>
+    </form>
+    
+    <a href="{% url 'buscar' %}">Volver a la búsqueda</a>
+</body>
+</html>
